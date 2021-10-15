@@ -1,6 +1,8 @@
+require('dotenv').config();
+
 let mongoose = require('mongoose');
 let app = require('./app');
-let port = 4000;
+let port = process.env.PORT;
 let url = 'mongodb+srv://raiders:N418QcDEXf6wT27v@cluster0.ow5hs.mongodb.net/controlAforo?retryWrites=true&w=majority';
 
 const config = {
