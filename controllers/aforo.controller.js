@@ -1,4 +1,4 @@
-const schemaBD = require('../models/user.model');
+const schemaBD = require('../models/aforo.model');
 
 const ID_AFORO = {_id : 2021};
 
@@ -50,8 +50,12 @@ const controller = {
             }
             else {
 
-                const { id, cuposDisponibles, ocupacionActual, aforo } = datosObtenidos;
-                if (cuposDisponibles <= aforo ) {
+                const { id,
+                     cuposDisponibles,
+                      ocupacionActual,
+                       aforo } = datosObtenidos;
+                 if (cuposDisponibles <= aforo ) {
+                    
                     if  (!ocupacionActual > 0) {
                         return res.status(404).send({ mensaje: 'No se pudo aumentar los cupos disponibles, no hay nadie Adentro' });
                         }
@@ -64,10 +68,10 @@ const controller = {
                         }
                         return res.status(200).send(cuposDisponiblesActualizado);
                     });
-                }
-                else {
-                    return res.status(404).send({ mensaje: 'No se pudo aumentar los cupos disponibles, no hay cupos disponibles' });
-                }
+                 }
+                 else {
+                     return res.status(404).send({ mensaje: 'No se pudo aumentar los cupos disponibles, no hay cupos disponibles' });
+                 }
 
             }
         }).catch(error => res.status(500).send({ mensaje: 'Error al obtener los datos: ' + error }))
@@ -79,8 +83,10 @@ const controller = {
             }
             else {
 
-                const { id, cuposDisponibles, ocupacionActual, aforo } = datosObtenidos;
-                if (cuposDisponibles > 0 && ocupacionActual < aforo) {
+                const { id,
+                    //  cuposDisponibles,
+                      ocupacionActual, aforo } = datosObtenidos;
+                // if (cuposDisponibles > 0) {
                     const cuposDisponibles = { $inc: { "cuposDisponibles": -1, "ocupacionActual": 1 } };
                     schemaBD.findOneAndUpdate(ID_AFORO, cuposDisponibles, { new: true }, (error, cuposDisponiblesActualizado) => {
                         if (error) {
@@ -90,15 +96,13 @@ const controller = {
                         }
                         return res.status(200).send(cuposDisponiblesActualizado);
                     });
-                }
-                else {
-                    return res.status(404).send({ mensaje: 'No se pudo disminuir los cupos disponibles, no hay cupos disponibles' });
-                }
+                // }
+                // else {
+                //     return res.status(404).send({ mensaje: 'No se pudo disminuir los cupos disponibles, no hay cupos disponibles' });
+                // }
 
             }
         }).catch(error => res.status(500).send({ mensaje: 'Error al obtener los datos: ' + error }))
-        //
-        //
     },
 }
 

@@ -4,7 +4,7 @@ let app = express();
 const bodyParser = require('body-parser');
 
 //otros archivos de rutas
-const routes = require('./routes/user.routes');
+const routes = require('./routes/aforo.routes');
 
 //middlewares
 app.use(bodyParser.urlencoded({extended:false}));
