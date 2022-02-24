@@ -22,6 +22,6 @@ app.use((req, res, next) => {
 //rutas
 app.use(routes);
 // cors
-// app.use(cors());
+app.use(cors());
 //exportar el modulo
 module.exports = app;
