@@ -3,7 +3,7 @@ const route = express.Router();
 const cors = require('cors');
 const controller = require('../controllers/aforo.controller')
 
-var whitelist = ['https://control-de-aaforo.000webhostapp.com/']
+var whitelist = ['https://control-de-aaforo.000webhostapp.com/','192.168.20.32']
 var corsOptions = {
   origin: function (origin, callback) {
     if (whitelist.indexOf(origin) !== -1) {
