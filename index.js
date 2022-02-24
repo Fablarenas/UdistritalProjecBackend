@@ -18,7 +18,7 @@ mongoose.connect(url, config)
     .then(()=>{
         console.log('Conectado exitosamente a la base de datos');
         app.listen(port, ()=>{
-            console.log('Servidor corriendo correctamente');
+            console.log('Servidor corriendo correctamente', port);
         });
     })
     .catch((err)=>{
