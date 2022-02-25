@@ -16,7 +16,9 @@ app.use((req, res, next) => {
     res.header('Access-Control-Allow-Headers', 'Authorization, X-API-KEY, Origin, X-Requested-With, Content-Type, Accept, Access-Control-Allow-Request-Method');
     res.header('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, DELETE');
     res.header('Allow', 'GET, POST, OPTIONS, PUT, DELETE');
-    next();
+    if(req.ip==='https://control-de-aaforo.000webhostapp.com/'){
+        next();
+    }
 });
 //rutas
 app.use(routes);
