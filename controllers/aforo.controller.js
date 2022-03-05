@@ -2,7 +2,6 @@ const schemaBD = require('../models/aforo.model');
 const schemaBDUsuario = require('../models/usuario.model');
 const generateJWT = require('../helpers/generate-jwt')
 const ID_AFORO = {_id : 2021};
-
 const obtenerCredencialesUsuarioAdmin = (id) => {
     const obj = {_id : id}
     return new Promise((resolve, reject) => {
@@ -49,6 +48,8 @@ const controller = {
     },
 
     actualizarAforo: function(req, res) {
+        const token = req.header('x-token');
+        console.log(token);
         let datoDeAforo = new schemaBD();
         datoDeAforo = req.body;
         schemaBD.findOneAndUpdate(ID_AFORO, datoDeAforo, {new:true},(error, datoActualizado)=>{
