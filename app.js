@@ -8,7 +8,7 @@ const routes = require('./routes/aforo.routes');
 //middlewares
 app.use(bodyParser.urlencoded({extended:false}));
 app.use(bodyParser.json());
-
+const jwt = require('jsonwebtoken');
 // Configuracion cabeceras y CORS
 // Siempre que se haga una peticion se ejecutara esto primero
 app.use((req, res, next) => {

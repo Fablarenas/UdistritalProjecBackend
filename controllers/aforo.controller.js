@@ -1,6 +1,25 @@
 const schemaBD = require('../models/aforo.model');
-
+const schemaBDUsuario = require('../models/usuario.model');
+const generateJWT = require('../helpers/generate-jwt')
 const ID_AFORO = {_id : 2021};
+
+const getCredentialsUserAdmin = (id) => {
+    const obj = {_id : id}
+    console.log(obj);
+    return new Promise((resolve, reject) => {
+       
+        schemaBDUsuario.findById(obj, (error, datosObtenidos) => {
+            if (error) {
+                reject(error);
+            } else if (!datosObtenidos) {
+                console.log(datosObtenidos);
+                resolve(datosObtenidos);
+            }
+            console.log(datosObtenidos);
+            return resolve(datosObtenidos);
+        });
+    });
+}
 
 const getAforo = (id) => {
 
@@ -103,6 +122,50 @@ const controller = {
 
             }
         }).catch(error => res.status(500).send({ mensaje: 'Error al obtener los datos: ' + error }))
+    },
+    login: async function (req, res) {
+
+        const{nombre,contraseña} = req.body;
+        try {
+        //buscar usuario y contraseña
+        const usuario = await getCredentialsUserAdmin(process.env.idUser);
+        // verificar contraseña
+        if (nombre != usuario.nombre || contraseña !=usuario.contrasena) {
+            return res.json({error: "usuario o contraseña incorrecta"});
+        }
+        const tokenauth = await generateJWT.generarJWT('algo');
+        res.json({
+            token:tokenauth
+        });
+        } catch (error) {
+            return res.json({error: error});
+        }
+        // getAforo(ID_AFORO).then(datosObtenidos => {
+        //     if (!datosObtenidos) {
+        //         return res.status(404).send({ mensaje: 'No Hay datos' });
+        //     }
+        //     else {
+
+        //         const { id,
+        //             //  cuposDisponibles,
+        //               ocupacionActual, aforo } = datosObtenidos;
+        //         // if (cuposDisponibles > 0) {
+        //             const cuposDisponibles = { $inc: { "cuposDisponibles": -1, "ocupacionActual": 1 } };
+        //             schemaBD.findOneAndUpdate(ID_AFORO, cuposDisponibles, { new: true }, (error, cuposDisponiblesActualizado) => {
+        //                 if (error) {
+        //                     return res.status(500).send({ mensaje: 'Error al disminuir los cupos disponibles: ' + error });
+        //                 } else if (!cuposDisponiblesActualizado) {
+        //                     return res.status(404).send({ mensaje: 'No se pudo disminuir los cupos disponibles' });
+        //                 }
+        //                 return res.status(200).send(cuposDisponiblesActualizado);
+        //             });
+        //         // }
+        //         // else {
+        //         //     return res.status(404).send({ mensaje: 'No se pudo disminuir los cupos disponibles, no hay cupos disponibles' });
+        //         // }
+
+        //     }
+        // }).catch(error => res.status(500).send({ mensaje: 'Error al obtener los datos: ' + error }))
     },
 }
 
