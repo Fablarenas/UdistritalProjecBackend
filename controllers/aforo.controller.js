@@ -3,9 +3,8 @@ const schemaBDUsuario = require('../models/usuario.model');
 const generateJWT = require('../helpers/generate-jwt')
 const ID_AFORO = {_id : 2021};
 
-const getCredentialsUserAdmin = (id) => {
+const obtenerCredencialesUsuarioAdmin = (id) => {
     const obj = {_id : id}
-    console.log(obj);
     return new Promise((resolve, reject) => {
        
         schemaBDUsuario.findById(obj, (error, datosObtenidos) => {
@@ -21,7 +20,7 @@ const getCredentialsUserAdmin = (id) => {
     });
 }
 
-const getAforo = (id) => {
+const ObtenerAforo = (id) => {
 
     return new Promise((resolve, reject) => {
 
@@ -39,7 +38,7 @@ const getAforo = (id) => {
 const controller = {
 
     obtenerDatosAforo: function (req, res) {
-        getAforo(ID_AFORO).then(datosObtenidos => {
+        ObtenerAforo(ID_AFORO).then(datosObtenidos => {
             if (!datosObtenidos) {
                 return res.status(404).send({ mensaje: 'No Hay datos' });
             }
@@ -63,7 +62,7 @@ const controller = {
     },
     aumentarCuposDisponibles: function(req, res) {
         //obtener el objeto aforo
-        getAforo(ID_AFORO).then(datosObtenidos => {
+        ObtenerAforo(ID_AFORO).then(datosObtenidos => {
             if (!datosObtenidos) {
                 return res.status(404).send({ mensaje: 'No Hay datos' });
             }
@@ -96,7 +95,7 @@ const controller = {
         }).catch(error => res.status(500).send({ mensaje: 'Error al obtener los datos: ' + error }))
     },
     disminuirCuposDisponibles: function (req, res) {
-        getAforo(ID_AFORO).then(datosObtenidos => {
+        ObtenerAforo(ID_AFORO).then(datosObtenidos => {
             if (!datosObtenidos) {
                 return res.status(404).send({ mensaje: 'No Hay datos' });
             }
@@ -128,7 +127,7 @@ const controller = {
         const{nombre,contraseña} = req.body;
         try {
         //buscar usuario y contraseña
-        const usuario = await getCredentialsUserAdmin(process.env.idUser);
+        const usuario = await obtenerCredencialesUsuarioAdmin(process.env.idUser);
         // verificar contraseña
         if (nombre != usuario.nombre || contraseña !=usuario.contrasena) {
             return res.json({error: "usuario o contraseña incorrecta"});
