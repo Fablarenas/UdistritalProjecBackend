@@ -1,6 +1,7 @@
 const schemaBD = require('../models/aforo.model');
 const schemaBDUsuario = require('../models/usuario.model');
 const generateJWT = require('../helpers/generate-jwt')
+const bcryptjs = require('bcryptjs');
 const ID_AFORO = {_id : 2021};
 const obtenerCredencialesUsuarioAdmin = (id) => {
     const obj = {_id : id}
@@ -130,7 +131,9 @@ const controller = {
         //buscar usuario y contraseña
         const usuario = await obtenerCredencialesUsuarioAdmin(process.env.idUser);
         // verificar contraseña
-        if (nombre != usuario.nombre || contraseña !=usuario.contrasena) {
+        const validPassword = bcryptjs.compareSync( contraseña, usuario.contrasena );
+        // verificar contraseña
+        if (nombre != usuario.nombre || !validPassword) {
             return res.json({error: "usuario o contraseña incorrecta"});
         }
         const tokenauth = await generateJWT.generarJWT('algo');
